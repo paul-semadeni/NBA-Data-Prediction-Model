@@ -12,26 +12,36 @@ from config.nba_dot_com_config import NBA_URL
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
-options = webdriver.ChromeOptions()
-options.page_load_strategy = "eager"
+# options = webdriver.ChromeOptions()
+# options.page_load_strategy = "eager"
 
-service = webdriver.ChromeService(log_output=subprocess.STDOUT)
-driver = webdriver.Chrome(service=service, options=options)
+# service = webdriver.ChromeService(log_output=subprocess.STDOUT)
+# driver = webdriver.Chrome(service=service, options=options)
+driver = webdriver.Chrome()
 
 driver.get(NBA_URL)
 
-title = driver.title
+try:
+    # Change pagination to all items
+    driver.implicitly_wait(10)
+    pagination_div = driver.find_element(By.XPATH, "//section[contains(@class, 'nba-stats-content-block')]")
+    select_element = pagination_div.find_element(By.CLASS_NAME, "DropDown_select__4pIg9")
+    select = Select(select_element)
+    driver.implicitly_wait(0.5)
+    select.select_by_value("-1")
 
-driver.implicitly_wait(0.5)
-
-# txt_box = driver.find_element(by=By.NAME, value="my-text")
-# submit_btn = driver.find_element(by=By.CSS_SELECTOR, value="button")
-
-# txt_box.send_keys("selenium")
-# submit_btn.click()
-
-# message = driver.find_element(by=By.ID, value="message")
-# text = message.text
-
-driver.quit()
+    # Scrape all table rows
+    driver.implicitly_wait(0.5)
+    table_id = driver.find_element(By.XPATH, "//table[contains(@class,'Crom_table')]")
+    rows = table_id.find_elements(By.TAG_NAME, "tr")
+    for row in rows:
+        print(row.text)
+except Exception as e:
+    print(str(e))
+    driver.quit()
+else:
+    print("Finished job")
+    driver.quit()
