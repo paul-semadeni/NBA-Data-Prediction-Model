@@ -30,17 +30,17 @@ nba_stats = pd.DataFrame()
 try:
     # Change season years
     driver.implicitly_wait(0.5)
-    season_div = WebDriverWait(driver, 10).until(
+    season_div = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.XPATH, "//section[contains(@class, 'Block_block__62M07')]"))
     )
     select_year = season_div.find_element(By.CLASS_NAME, "DropDown_select__4pIg9")
     select = Select(select_year)
     option_list = select.options
     for n in range(len(option_list)):
-        season_div = WebDriverWait(driver, 10).until(
+        season_div = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, "//section[contains(@class, 'Block_block__62M07')]"))
         )
-        select_year = WebDriverWait(driver, 10).until(
+        select_year = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, "DropDown_select__4pIg9"))
         )
         time.sleep(8)
@@ -49,7 +49,7 @@ try:
         season = opt.text
         select.select_by_value(season)
         # Change pagination to all items
-        pagination_div = WebDriverWait(driver, 10).until(
+        pagination_div = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, "//section[contains(@class, 'nba-stats-content-block')]"))
         )
         time.sleep(8)
@@ -58,7 +58,7 @@ try:
         select.select_by_value("-1")
 
         # Scrape all table rows
-        table_id = WebDriverWait(driver, 10).until(
+        table_id = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, "//table[contains(@class,'Crom_table')]"))
         )
         rows = table_id.find_elements(By.TAG_NAME, "tr")
@@ -98,4 +98,4 @@ else:
     driver.quit()
 
 cwd = os.getcwd()
-nba_stats.to_excel(cwd + "/collect-data/src/files/nba_data.xlsx", sheet_name="NBA Stats")
+nba_stats.to_excel(cwd + "/collect-data/src/files/nba_data_2.xlsx", sheet_name="NBA Stats")
