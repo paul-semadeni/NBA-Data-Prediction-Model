@@ -17,11 +17,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-# options = webdriver.ChromeOptions()
-# options.page_load_strategy = "eager"
-
-# service = webdriver.ChromeService(log_output=subprocess.STDOUT)
-# driver = webdriver.Chrome(service=service, options=options)
 driver = webdriver.Chrome()
 
 driver.get(NBA_URL)
